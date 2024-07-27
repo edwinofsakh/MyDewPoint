@@ -3,6 +3,7 @@ import { customElement } from 'lit/decorators.js';
 
 import './pages/app-home';
 import './components/header';
+import './components/dew-point-calculator';
 import './styles/global.css';
 import { router } from './router';
 
