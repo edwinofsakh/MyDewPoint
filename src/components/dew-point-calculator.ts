@@ -14,11 +14,12 @@ function gamma(temperature: number, humidity: number) {
 
 function calcDewPoint(temperature: number, humidity: number) {
   const g = gamma(temperature, humidity);
-  return (C * g) / (B - g);
+  return round((C * g) / (B - g));
 }
 
-function round(value: number) {
-  return Math.round((value + Number.EPSILON) * 10) / 10;
+function round(value: number, precision = 1) {
+  const base = 10 ** precision;
+  return Math.round((value + Number.EPSILON) * base) / base;
 }
 
 @customElement('dew-point-calculator')
@@ -51,14 +52,12 @@ export class AppHeader extends LitElement {
 
   updated(changedProperties: Map<string, any>) {
     if (changedProperties.has('_dewPoint')) {
-      this._notifyDewPoint();
+      this._notify('dewPoint', this._dewPoint);
     }
   }
 
-  private _notifyDewPoint() {
-    this.dispatchEvent(
-      new CustomEvent('change', { detail: { dewPoint: this._dewPoint } })
-    );
+  private _notify(key: string, value: number) {
+    this.dispatchEvent(new CustomEvent('change', { detail: { key, value } }));
   }
 
   handleChange(e: Event) {
@@ -68,9 +67,11 @@ export class AppHeader extends LitElement {
     switch (name) {
       case 'temperature':
         this._temperature = parseFloat(value);
+        this._notify('temperature', this._temperature);
         break;
       case 'humidity':
         this._humidity = parseFloat(value);
+        this._notify('humidity', this._humidity);
         break;
       default:
         break;

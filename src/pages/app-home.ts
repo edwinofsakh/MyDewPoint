@@ -7,6 +7,18 @@ import '@shoelace-style/shoelace/dist/components/button/button.js';
 
 import { styles as sharedStyles } from '../styles/shared-styles';
 
+function getSearchNumber(
+  searchParams: URLSearchParams,
+  key: string,
+  fallback: number
+) {
+  const param = searchParams.get(key);
+  if (!param) return fallback;
+  const parsed = parseFloat(param);
+  if (isNaN(parsed)) return fallback;
+  return parsed;
+}
+
 @customElement('app-home')
 export class AppHome extends LitElement {
   @property({ attribute: false })
@@ -33,13 +45,27 @@ export class AppHome extends LitElement {
 
   constructor() {
     super();
-    this.temperature = 28;
-    this.humidity = 64;
+    const searchParams = new URLSearchParams(location.search);
+    this.temperature = getSearchNumber(searchParams, 'temperature', 28);
+    this.humidity = getSearchNumber(searchParams, 'humidity', 64);
     this._hasShareButton = 'share' in navigator;
   }
 
-  handleDewPointChange(e: CustomEvent) {
-    this.dewPoint = e.detail.dewPoint;
+  handleChange(e: CustomEvent) {
+    const { key, value } = e.detail;
+    switch (key) {
+      case 'temperature':
+        this.temperature = value;
+        break;
+      case 'humidity':
+        this.humidity = value;
+        break;
+      case 'dewPoint':
+        this.dewPoint = value;
+        break;
+      default:
+        break;
+    }
   }
 
   share() {
@@ -47,8 +73,8 @@ export class AppHome extends LitElement {
 
     (navigator as any).share({
       title: `Dew point is ${this.dewPoint}`,
-      text: `Current temperature is ${this.temperature}. Current humidity is ${this.humidity}. Current dew point is ${this.dewPoint}`,
-      // url: 'https://github.com/pwa-builder/pwa-starter',
+      text: `Temperature: ${this.temperature}℃. Humidity: ${this.humidity}%. Dew point: ${this.dewPoint}℃`,
+      url: `https://my-dew-point.web.app/?temperature=${this.temperature}&humidity=${this.humidity}`,
     });
   }
 
@@ -62,7 +88,7 @@ export class AppHome extends LitElement {
             <dew-point-calculator
               initialTemperature=${this.temperature}
               initialHumidity=${this.humidity}
-              @change=${this.handleDewPointChange}
+              @change=${this.handleChange}
             ></dew-point-calculator>
 
             ${this._hasShareButton
