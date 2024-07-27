@@ -1,6 +1,6 @@
 import { LitElement, css } from 'lit';
 import { customElement } from 'lit/decorators.js';
-import { setBasePath } from '@shoelace-style/shoelace/dist/utilities/base-path.js';
+import { registerIconLibrary } from '@shoelace-style/shoelace/dist/utilities/icon-library.js';
 
 import './pages/app-home';
 import './components/header';
@@ -8,7 +8,9 @@ import './components/dew-point-calculator';
 import './styles/global.css';
 import { router } from './router';
 
-setBasePath('./node_modules/@shoelace-style/shoelace/dist');
+registerIconLibrary('default', {
+  resolver: name => `https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/icons/${name}.svg`
+});
 
 @customElement('app-index')
 export class AppIndex extends LitElement {
