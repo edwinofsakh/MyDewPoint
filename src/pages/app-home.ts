@@ -71,10 +71,12 @@ export class AppHome extends LitElement {
   share() {
     if (!this._hasShareButton) return;
 
+    const text = `Temperature: ${this.temperature}℃. Humidity: ${this.humidity}%. Dew point: ${this.dewPoint}℃`;
+    const url = `https://my-dew-point.web.app/?temperature=${this.temperature}&humidity=${this.humidity}`;
+
     (navigator as any).share({
-      title: `Dew point is ${this.dewPoint}`,
-      text: `Temperature: ${this.temperature}℃. Humidity: ${this.humidity}%. Dew point: ${this.dewPoint}℃`,
-      url: `https://my-dew-point.web.app/?temperature=${this.temperature}&humidity=${this.humidity}`,
+      title: `Dew point: ${this.dewPoint}℃`,
+      text: `${text}\n${url}`,
     });
   }
 
