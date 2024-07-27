@@ -5,6 +5,7 @@ import { registerIconLibrary } from '@shoelace-style/shoelace/dist/utilities/ico
 import './pages/app-home';
 import './components/header';
 import './components/dew-point-calculator';
+import './components/weather-forecast';
 import './styles/global.css';
 import { router } from './router';
 

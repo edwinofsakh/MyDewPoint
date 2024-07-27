@@ -21,6 +21,7 @@ export class AppAbout extends LitElement {
             <h2>MyDewPoint</h2>
 
             <p>MyDewPoint is a personal dew point calculator.</p>
+            <p>Version: 0.0.2</p>
           </sl-card>
         </div>
       </main>

@@ -36,6 +36,12 @@ export class AppHome extends LitElement {
   static styles = [
     sharedStyles,
     css`
+      #footerButtons {
+        display: flex;
+        gap: 12px;
+        flex-direction: column;
+      }
+
       sl-card::part(footer) {
         display: flex;
         justify-content: flex-end;
@@ -50,6 +56,8 @@ export class AppHome extends LitElement {
     this.humidity = getSearchNumber(searchParams, 'humidity', 64);
     this._hasShareButton = 'share' in navigator;
   }
+
+  protected firstUpdated() {}
 
   handleChange(e: CustomEvent) {
     const { key, value } = e.detail;
@@ -93,6 +101,8 @@ export class AppHome extends LitElement {
               @change=${this.handleChange}
             ></dew-point-calculator>
 
+            <weather-forecast></weather-forecast>
+
             ${this._hasShareButton
               ? html`<sl-button
                   slot="footer"
@@ -103,9 +113,11 @@ export class AppHome extends LitElement {
               : null}
           </sl-card>
 
-          <sl-button href="${resolveRouterPath('about')}" variant="primary"
-            >Navigate to About</sl-button
-          >
+          <div id="footerButtons">
+            <sl-button href="${resolveRouterPath('about')}" variant="primary">
+              Navigate to About
+            </sl-button>
+          </div>
         </div>
       </main>
     `;

@@ -1,6 +1,6 @@
 {
   "name": "my-dew-point",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Personal dew point calculator",
   "main": "index.js",
   "scripts": {
@@ -15,9 +15,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@lit/task": "^1.0.1",
     "@shoelace-style/shoelace": "^2.15.0",
     "@thepassle/app-tools": "^0.9.12",
     "lit": "^3.1.2",
+    "openmeteo": "^1.1.4",
     "urlpattern-polyfill": "^10.0.0",
     "workbox-build": "^7.0.0",
     "workbox-core": "^7.0.0",
