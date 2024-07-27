@@ -236,7 +236,7 @@ export class AppHeader extends LitElement {
           <tbody>
             <tr>
               <td>Temperature (2m)</td>
-              <td>${this.getCurrent('dewPoint2m', 1)}℃</td>
+              <td>${this.getCurrent('temperature2m', 1)}℃</td>
             </tr>
             <tr>
               <td>Humidity (2m)</td>
