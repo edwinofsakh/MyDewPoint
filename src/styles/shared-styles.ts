@@ -12,6 +12,7 @@ export const styles = css`
 
   sl-card {
     padding: 18px;
+    width: 100%;
     max-width: 500px;
   }
 

@@ -46,11 +46,7 @@ function getForecastArray(value: HourlyData, index: number) {
 
 @customElement('weather-forecast')
 export class AppHeader extends LitElement {
-  @property({ state: true }) _temperature!: number;
-  @property({ type: Number }) initialTemperature!: number;
-  @property({ state: true }) _humidity!: number;
-  @property({ type: Number }) initialHumidity!: number;
-  @property({ state: true }) _dewPoint!: number;
+  @property({ type: Number }) dewPoint!: number;
 
   @state()
   _hasGeolocation = 'geolocation' in navigator;
@@ -72,6 +68,10 @@ export class AppHeader extends LitElement {
       margin-top: 18px;
     }
 
+    table {
+      margin: auto;
+    }
+
     th {
       text-align: start;
     }
@@ -79,6 +79,11 @@ export class AppHeader extends LitElement {
     th,
     td {
       padding-inline-end: 8px;
+    }
+
+    .debug-information {
+      margin-top: 1rem;
+      text-align: center;
     }
   `;
 
@@ -196,8 +201,8 @@ export class AppHeader extends LitElement {
         <table>
           <thead>
             <tr>
-              <th>Date</th>
-              <th>Dew point</th>
+              <th>Time</th>
+              <th>Dew Point</th>
             </tr>
           </thead>
           <tbody>
@@ -213,7 +218,7 @@ export class AppHeader extends LitElement {
                       date="${this.getTime(i - 1)}"
                     ></sl-format-date>
                   </td>
-                  <td>${this.getCurrent('dewPoint2m', 1, i - 1)}℃</td>
+                  <td>${this.getCurrent('dewPoint2m', 1, i - 1)}℃ ${i == 1 ? ` vs ${this.dewPoint}℃` : ''}</td>
                 </tr>
               `
             )}
@@ -256,13 +261,17 @@ export class AppHeader extends LitElement {
           </tbody>
         </table>
 
-        <br />
-        Latitude: ${this._coordinates.latitude}<br />
-        Longitude: ${this._coordinates.longitude}<br />
-        Timezone: ${this._timezone}<br />
-        <sl-button href="${mapUrl}" target="_blank">
-          Check on Google Map
-        </sl-button>
+        <div class="debug-information">
+          Latitude: ${this._coordinates.latitude}<br />
+          Longitude: ${this._coordinates.longitude}<br />
+          Timezone: ${this._timezone}<br />
+          <br />
+          <small>Powered by Open-Meteo</small><br />
+          <br />
+          <sl-button href="${mapUrl}" target="_blank">
+            Check Location on Google Map
+          </sl-button>
+        </div>
       </div>
     `;
   }

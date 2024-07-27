@@ -40,6 +40,7 @@ export class AppHome extends LitElement {
         display: flex;
         gap: 12px;
         flex-direction: column;
+        margin-bottom: 1rem;
       }
 
       sl-card::part(footer) {
@@ -101,7 +102,7 @@ export class AppHome extends LitElement {
               @change=${this.handleChange}
             ></dew-point-calculator>
 
-            <weather-forecast></weather-forecast>
+            <weather-forecast dewPoint=${this.dewPoint}></weather-forecast>
 
             ${this._hasShareButton
               ? html`<sl-button

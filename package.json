@@ -1,6 +1,6 @@
 {
   "name": "my-dew-point",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Personal dew point calculator",
   "main": "index.js",
   "scripts": {
