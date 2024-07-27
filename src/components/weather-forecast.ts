@@ -109,6 +109,10 @@ export class AppHeader extends LitElement {
       this._date = new Date();
       await this.fetchWeatherForecast();
     } catch (error) {
+      if (error != null && typeof error == 'object' && 'message' in error) {
+        alert(error.message);
+      }
+
       console.log(error);
     }
   }
@@ -185,13 +189,17 @@ export class AppHeader extends LitElement {
 
   render() {
     if (!this._coordinates) {
-      return html`
-        <div class="weather-forecast">
-          <sl-button variant="primary" @click=${this.showForecast}>
-            Show Forecast
-          </sl-button>
-        </div>
-      `;
+      if (!this._hasGeolocation) {
+        return html``;
+      } else {
+        return html`
+          <div class="weather-forecast">
+            <sl-button variant="primary" @click=${this.showForecast}>
+              Show Forecast
+            </sl-button>
+          </div>
+        `;
+      }
     }
 
     const mapUrl = `https://www.google.com/maps/@${this._coordinates.latitude},${this._coordinates.longitude},18z`;
@@ -218,7 +226,10 @@ export class AppHeader extends LitElement {
                       date="${this.getTime(i - 1)}"
                     ></sl-format-date>
                   </td>
-                  <td>${this.getCurrent('dewPoint2m', 1, i - 1)}℃ ${i == 1 ? ` vs ${this.dewPoint}℃` : ''}</td>
+                  <td>
+                    ${this.getCurrent('dewPoint2m', 1, i - 1)}℃
+                    ${i == 1 ? ` vs ${this.dewPoint}℃` : ''}
+                  </td>
                 </tr>
               `
             )}
