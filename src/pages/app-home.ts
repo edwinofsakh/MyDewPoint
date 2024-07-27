@@ -1,11 +1,28 @@
-import { LitElement, css, html } from 'lit';
+import { LitElement, PropertyValues, css, html } from 'lit';
 import { property, customElement } from 'lit/decorators.js';
 import { resolveRouterPath } from '../router';
 
 import '@shoelace-style/shoelace/dist/components/card/card.js';
 import '@shoelace-style/shoelace/dist/components/button/button.js';
+import '@shoelace-style/shoelace/dist/components/input/input.js';
 
 import { styles } from '../styles/shared-styles';
+
+const B = 17.625
+const C = 243.04
+
+function gamma(temperature: number, humidity: number) {
+  return Math.log(humidity/100) + B*temperature / (C + temperature);
+}
+
+function calcDewPoint(temperature: number, humidity: number) {
+  const g = gamma(temperature, humidity)
+  return C * g / (B - g);
+}
+
+function round(value: number) {
+  return Math.round((value + Number.EPSILON) * 10) / 10
+}
 
 @customElement('app-home')
 export class AppHome extends LitElement {
@@ -13,6 +30,15 @@ export class AppHome extends LitElement {
   // For more information on using properties and state in lit
   // check out this link https://lit.dev/docs/components/properties/
   @property() message = 'Welcome!';
+
+  @property({attribute: false})
+  temperature!: number;
+
+  @property({attribute: false})
+  humidity!: number;
+
+  @property({attribute: false})
+  dewPoint!: number;
 
   static styles = [
     styles,
@@ -24,6 +50,7 @@ export class AppHome extends LitElement {
       flex-direction: column;
     }
 
+    #pewPointCalculatorCard,
     #welcomeCard,
     #infoCard {
       padding: 18px;
@@ -37,7 +64,7 @@ export class AppHome extends LitElement {
 
     @media(min-width: 750px) {
       sl-card {
-        width: 70vw;
+        width: 500px;
       }
     }
 
@@ -56,9 +83,32 @@ export class AppHome extends LitElement {
   `];
 
   async firstUpdated() {
-    // this method is a lifecycle even in lit
-    // for more info check out the lit docs https://lit.dev/docs/components/lifecycle/
-    console.log('This is your home page');
+    this.temperature = 28
+    this.humidity = 64
+    this.dewPoint = calcDewPoint(this.temperature, this.humidity);
+  }
+
+  willUpdate(changedProperties: PropertyValues<this>) {
+    // only need to check changed properties for an expensive computation.
+    if (changedProperties.has('temperature') || changedProperties.has('humidity')) {
+      this.dewPoint = calcDewPoint(this.temperature, this.humidity);
+    }
+  }
+
+  handleChange(e: Event) {
+    if (!e.target) return
+    const { name, value } = e.target as HTMLInputElement;
+
+    switch (name) {
+      case  'temperature':
+        this.temperature = parseFloat(value)
+        break;
+      case  'humidity':
+        this.humidity = parseFloat(value)
+        break;
+      default:
+        break;
+    }
   }
 
   share() {
@@ -77,6 +127,18 @@ export class AppHome extends LitElement {
 
       <main>
         <div id="welcomeBar">
+        <sl-card id="pewPointCalculatorCard">
+          <h2>Dew Point Calculator</h2>
+
+          <div>
+            <sl-input type="number" name="temperature" size="large" label="Temperature" value=${this.temperature} step="0.1" required @sl-change=${this.handleChange}></sl-input>
+            <br/>
+            <sl-input type="number" name="humidity" size="large" label="Humidity" value=${this.humidity} @sl-change=${this.handleChange}></sl-input>
+            <br/>
+            <sl-input type="number" name="dewPoint" size="large" label="Dew Point" value=${round(this.dewPoint)} disabled></sl-input>
+          </div>
+        </sl-card>
+
           <sl-card id="welcomeCard">
             <div slot="header">
               <h2>${this.message}</h2>
