@@ -15,12 +15,13 @@ export class AppHeader extends LitElement {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: var(--app-color-primary);
+      background: var(--app-background-color);
       color: white;
       padding: 12px;
       padding-top: 4px;
 
       position: fixed;
+      z-index: 1;
       left: env(titlebar-area-x, 0);
       top: env(titlebar-area-y, 0);
       height: env(titlebar-area-height, 30px);
@@ -48,6 +49,7 @@ export class AppHeader extends LitElement {
 
     @media(prefers-color-scheme: light) {
       header {
+        background: white;
         color: black;
       }
 
