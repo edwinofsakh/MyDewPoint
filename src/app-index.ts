@@ -1,11 +1,14 @@
 import { LitElement, css } from 'lit';
 import { customElement } from 'lit/decorators.js';
+import { setBasePath } from '@shoelace-style/shoelace/dist/utilities/base-path.js';
 
 import './pages/app-home';
 import './components/header';
 import './components/dew-point-calculator';
 import './styles/global.css';
 import { router } from './router';
+
+setBasePath('./node_modules/@shoelace-style/shoelace/dist');
 
 @customElement('app-index')
 export class AppIndex extends LitElement {

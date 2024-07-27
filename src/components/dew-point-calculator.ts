@@ -3,6 +3,7 @@ import { property, customElement } from 'lit/decorators.js';
 
 import '@shoelace-style/shoelace/dist/components/button/button.js';
 import '@shoelace-style/shoelace/dist/components/input/input.js';
+import '@shoelace-style/shoelace/dist/components/icon/icon.js';
 
 const B = 17.625;
 const C = 243.04;
@@ -88,7 +89,9 @@ export class AppHeader extends LitElement {
           step="0.1"
           required
           @sl-change=${this.handleChange}
-        ></sl-input>
+        >
+          <sl-icon name="thermometer-half" slot="prefix"></sl-icon>
+        </sl-input>
         <br />
         <sl-input
           type="number"
@@ -97,7 +100,9 @@ export class AppHeader extends LitElement {
           label="Humidity"
           value=${this._humidity}
           @sl-change=${this.handleChange}
-        ></sl-input>
+        >
+          <sl-icon name="moisture" slot="prefix"></sl-icon>
+        </sl-input>
         <br />
         <sl-input
           type="number"
@@ -106,7 +111,9 @@ export class AppHeader extends LitElement {
           label="Dew Point"
           value=${round(this._dewPoint)}
           disabled
-        ></sl-input>
+        >
+          <sl-icon name="thermometer-snow" slot="prefix"></sl-icon>
+        </sl-input>
       </div>
     `;
   }

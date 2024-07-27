@@ -1,4 +1,4 @@
-# PWA Starter
+# MyDewPoint
 
 [**Straight to Full Documentation**](https://docs.pwabuilder.com/#/starter/quick-start)
 
